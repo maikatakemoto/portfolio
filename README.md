@@ -35,10 +35,10 @@ This portfolio is organized by course or topic area. Each folder contains the re
 
 Here are some examples of what you’ll find in this portfolio:
 
-- **[Data Analytics in R](link-to-folder)**: Projects involving data analysis using R, including work with real-world datasets, data visualizations, and statistical modeling.
-- **[Game AI and Heuristics](link-to-folder)**: Implementations of algorithms for game decision-making, including SEPIA AI heuristics and optimization strategies.
-- **[Web Applications](link-to-folder)**: Web development projects using Python, JavaScript, and MongoDB, such as an app that measures carbon emissions based on travel methods.
-- **[Neural Networks](link-to-folder)**: A collection of machine learning assignments and projects, including implementations of neural networks and exploration of AI models.
+- **[Data Analytics in R]**: Projects involving data analysis using R, including work with real-world datasets, data visualizations, and statistical modeling.
+- **[Game AI and Heuristics]**: Implementations of algorithms for game decision-making, including SEPIA AI heuristics and optimization strategies.
+- **[Web Applications]**: Web development projects using Python, JavaScript, and MongoDB, such as an app that measures carbon emissions based on travel methods.
+- **[Neural Networks]**: A collection of machine learning assignments and projects, including implementations of neural networks and exploration of AI models.
 
 ## Contact
 
