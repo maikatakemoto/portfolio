@@ -20,6 +20,7 @@ This portfolio is organized by course or topic area. Each folder contains the re
 - **Machine Learning & AI**: Projects focused on neural networks, optimization algorithms, and game AI strategies.
 - **Web Development**: Code for web applications, showcasing both front-end and back-end skills.
 - **Distributed Systems**: Implementations of distributed algorithms, such as Raft, along with concurrent programming assignments.
+- **Computer Vision**: Implementations of filters used for photo editing, motion estimation techniques, and 3D animation.
 
 ## Getting Started
 
