@@ -16,7 +16,7 @@ This portfolio is organized by course or topic area. Each folder contains the re
 
 ### Current Topics Included:
 - **Data Analysis**: Scripts and projects related to visualization, and statistical analysis.
-- **Algorithms and Data Structures**: Implementations of classic algorithms and data structures, along with problem-solving assignments.
+- **Algorithms**: Implementations of classic algorithms and data structures, along with problem-solving assignments.
 - **Machine Learning & AI**: Projects focused on neural networks, optimization algorithms, and game AI strategies.
 - **Web Development**: Code for web applications, showcasing both front-end and back-end skills.
 - **Distributed Systems**: Implementations of distributed algorithms, such as Raft, along with concurrent programming assignments.
