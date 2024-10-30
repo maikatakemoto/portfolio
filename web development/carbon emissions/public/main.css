@@ -1,0 +1,88 @@
+
+body {
+    background-color: #98fb98; /* A pastel green, different from the header and footer */
+    color: #fff; /* White color for all text */
+    font-family: 'Arial', sans-serif; /* A clean, simple font choice */
+    line-height: 1.6; /* Spacing out the lines a bit for readability */
+    padding: 20px; /* Add some space around the content */
+    text-align: center; /* Center text */
+}
+
+.container {
+    width: 80%; /* or your preferred width */
+    margin: 0 auto; /* Centers the container */
+    padding: 20px; /* Adds padding inside the container */
+}
+
+/* Reset some default styles */
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+    color: inherit; /* This makes the color the same as the parent, useful for inheriting from the body or specific classes */
+}
+
+/* Header styles */
+header {
+    background-color: #8fbc8f; /* A nice shade of light green */
+    padding: 10px 0;
+    color: white;
+}
+
+header .container {
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.8em;
+}
+
+header nav ul {
+    display: flex;
+    gap: 20px; /* This creates space between the navigation items */
+}
+
+header nav ul li {
+    padding: 10px 20px;
+    background-color: #6b8e74; /* A darker shade of green for contrast */
+    border-radius: 5px; /* Rounded corners for buttons */
+}
+
+header nav ul li:hover {
+    background-color: #556b2f; /* Even darker shade on hover for interaction feedback */
+}
+
+/* Footer styles */
+footer {
+    background-color: #8fbc8f;
+    padding: 20px 0;
+    color: white;
+    text-align: center;
+}
+
+footer .container {
+    width: 90%;
+    margin: 0 auto;
+}
+
+footer p {
+    margin: 10px 0;
+}
+
+footer a {
+    color: white;
+    padding: 5px;
+}
+
+footer a:hover {
+    text-decoration: underline; /* Simple interaction feedback */
+}
