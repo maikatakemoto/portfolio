@@ -1,0 +1,111 @@
+---
+title: "MA [46]15 Homework 4"
+author: "Maika Takemoto"
+format: gfm
+---
+
+
+## Question 1
+
+My work is to perform a preliminary analysis of the Childhood and Adolescent Health conditions data downloaded from . 
+This data set is derived from data that was collected in 2016 as part of the National Survey of Children's Health hosted by the [Data Resource Center for Child and Adolescent Health](https://www.childhealthdata.org/browse/archive-prior-year-nsch-and-ns-cshcn-data-resources/state-snapshot).
+I read the file into a data set call `cahc_df`.
+
+```{r q1}
+suppressPackageStartupMessages(library(tidyverse))
+cahc_df <- read_csv("data/cahmi_health_conditions.csv")
+
+# Check for unusual values in 'age'
+cahc_df |> 
+  ggplot(aes(x = age)) + geom_bar()
+
+# Check for unusual values in 'birth_wt_oz'
+cahc_df |> 
+  ggplot(aes(x = birth_wt_oz)) + geom_bar()
+
+# Check for unusual values in 'fam_pov_lev'
+cahc_df |> 
+  ggplot(aes(x = fam_pov_lev)) + geom_bar()
+
+# Check frequency counts for 'sex' 
+cahc_df |> 
+  count(sex)
+```
+Overall, the 'age' variable appears to follow a normal distribution. However, 'birth_wt_oz' shows several noticeable outliers, with values that are not evenly distributed across the range of birth weights. Similarly, 'fam_pov_lev' also lacks an even distribution, with a significant drop in counts for the ranges (50, 100] and <=50.
+
+## Question 2
+
+```{r q2}
+cahc_long <- cahc_df |> 
+  pivot_longer(
+    cols = starts_with(c("ever_had", "currently_has", "severity")), 
+    names_pattern = "(.*)_(.*)$",  
+    names_to = c(".value", "condition")  
+  )
+
+# Check if currently_has is not NA only if ever_had is "Yes"
+invalid_currently_has <- cahc_long |> 
+  filter(ever_had != "Yes", !is.na(currently_has))
+
+# Check if severity is not NA only if currently_has is "Yes"
+invalid_severity <- cahc_long |> 
+  filter(currently_has != "Yes", !is.na(severity))
+
+invalid_currently_has  # This should be an empty tibble if the condition holds true
+invalid_severity  # This should also be an empty tibble if the condition holds true
+
+```
+
+
+## Question 3
+
+```{r q3}
+cahc_long |> 
+  group_by(cid, sex) |>  
+  summarize(n_cond = sum(currently_has == "Yes", na.rm = TRUE)) |>  
+  ungroup() |> 
+  count(sex, n_cond) |>  
+  ggplot(aes(x = n_cond, y = n, fill = sex)) +  
+  geom_col(position = "dodge") +  
+  labs(title = "Number of Health Conditions by Sex", 
+       x = "Number of Conditions", 
+       y = "Number of Children", 
+       fill = "Sex") +
+  theme_minimal() 
+```
+
+Aside from those with 0 conditions, more 'Male' children have reported health conditions compared to 'Female' children. However, the overall number of children decreases as the number of conditions increases.
+
+## Question 4
+
+```{r q4}
+cahc_long2 <- cahc_long |>
+mutate(currently_has = if_else(ever_had == "No", "No", currently_has))
+
+race_prop <- cahc_long2 |> 
+  count(race) |> 
+  mutate(proportion = n / nrow(cahc_long))
+
+cahc_long2 <- cahc_long2 |> 
+  left_join(race_prop, by = "race") |> 
+  mutate(race = if_else(proportion < 0.05, "Other", race)) |> 
+  select(-n, -proportion)  
+
+raceCond_table <- cahc_long2 |>
+  group_by(race, condition) |>
+  summarize(proportion = mean(currently_has == "Yes", na.rm = TRUE)) |>
+  ungroup()
+
+raceCond_table_final <- raceCond_table |>
+  pivot_wider(
+    names_from = race,
+    values_from = proportion
+  )
+
+raceCond_table_final |>
+  gt::gt() |>
+  gt::fmt_percent(-condition) |>
+  gt::as_raw_html()
+```
+
+For most health conditions, children categorized as 'Asian' have a noticeably lower proportion compared to other race categories. In contrast, 'Black or African American' children show the highest proportions for several specific conditions, particularly 'Developmental Delay', 'Learning Disability', 'Asthma', and 'Speech Disorder'. Typically, the second highest proportions were found among children categorized as 'White' or 'Two or More Races'. These differences may reflect outside influences such as socioeconomic status, healthcare access, or environmental conditions.

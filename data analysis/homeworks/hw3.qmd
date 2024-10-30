@@ -1,0 +1,89 @@
+---
+title: "MA [46]15 Homework 3"
+author: "Maika Takemoto"
+format: gfm
+---
+
+## Question 1
+
+
+My work is to perform a preliminary analysis of the Covid data to ascertain when different types of data were collected.
+
+```{r}
+library(tidyverse)
+
+cov_df <- read_csv("covid_data.csv", 
+                   na = "missing", 
+                   col_types = cols(
+                       date = col_date(format = ""),
+                       state = col_character(),
+                       race = col_character(),
+                       state_name = col_character(),
+                       population = col_double(),
+                       Tests = col_double()
+                   ))
+
+problems(cov_df)
+
+```
+
+## Question 2
+
+```{r}
+all_9 <- cov_df |> 
+  group_by(state, date) |>   
+  filter(n() == 9) |>        
+  summarize(num_days = n()) |>   
+  group_by(state) |>             
+  summarize(total_days = n()) |> 
+  arrange(desc(total_days))      
+
+# Print table
+all_9
+```
+
+The states with the highest number of total reporting days are primarily located on the West Coast. The top three states reported in the 90s, but thereafter, the number of reporting days drops significantly, falling to the high 50s and continuing to decrease consistently.
+
+
+## Question 3
+
+```{r}
+library(dplyr)
+
+filtered_df <- cov_df |>
+  filter(race == "Total", !is.na(Cases), wday(date) == 1) |>
+  group_by(state) |>
+  filter(!(date == lag(date) + days(7) | row_number() == 1))
+
+# Check if only one row remains
+print(filtered_df |> select(state, date))
+```
+
+## Question 4
+
+```{r}
+cov_df |> 
+  group_by(state, race) |> 
+  filter(!is.na(Cases)) |> 
+  summarize(first_non_na = month(first(date), label = TRUE)) |> 
+  count(first_non_na, race) |>
+  ggplot(aes(x = first_non_na, y = n, fill = race)) + 
+  geom_bar(stat = "identity") + 
+  labs(x = "First Reporting Month", y = "Number of States", title = "Count of States' First Reported Covid Case by Month and Race") +
+  facet_wrap(~race)
+```
+
+
+```{r}
+cov_df |> 
+  group_by(state, race) |> 
+  filter(!is.na(Hosp)) |> 
+  summarize(first_non_na = month(first(date), label = TRUE)) |> 
+  count(first_non_na, race) |>
+  ggplot(aes(x = first_non_na, y = n, fill = race)) + 
+  geom_bar(stat = "identity") + 
+  labs(x = "First Reporting Month", y = "Number of Hospitals", title = "Count of Hospitals' First Reported Covid Case by Month and Race") +
+  facet_wrap(~race)
+```
+
+Most states started reporting cases around April, while the majority of hospitals started reporting cases around June. Additionally, for both states and hospitals, the spike in cases reported was most prevalent for races White and Black.

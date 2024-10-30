@@ -1,0 +1,168 @@
+---
+title: "MA [46]15 Homework 2"
+author: "Maika Takemoto"
+format: gfm
+---
+
+In this homework I'm looking at a [data set](https://github.com/jhuggins/anti-racist-data/tree/master/data/AP-enrollment-by-race) of high school enrollment demographics according to whether the high school offers any advanced placement (AP) courses.
+
+```{r init}
+#| echo: FALSE
+suppressPackageStartupMessages(library(tidyverse))
+saber <- read_csv(
+    "school_ap_enrollment_by_race.csv",
+    col_types = cols(
+      state = col_character(),
+      district = col_character(),
+      school = col_character(),
+      ap = col_character(),
+      type = col_character(),
+      total = col_integer(),
+      `American Indian/Alaska Native` = col_integer(),
+      Asian = col_integer(),
+      Black = col_integer(),
+      Hispanic = col_integer(),
+      `Native Hawaiian/Pacific Islander` = col_integer(),
+      `Two or More Races` = col_integer(),
+      White = col_integer()
+    )
+  ) |> 
+  filter(type == "total") |> 
+  select(-type)
+```
+
+
+```{r}
+library("dplyr")
+library("gt")
+```
+
+
+## Question 1
+
+Here are the 5 largest states in terms of total high school enrollment.
+
+```{r q1}
+largestStates <- saber |>
+  group_by(state) |>  
+  summarize(total_state_enrollment = sum(total)) |>  
+  arrange(desc(total_state_enrollment)) |>  
+  slice_head(n = 5) |>  
+  pull(state)  
+
+largestStates 
+```
+
+
+## Question 2
+
+For the 5 largest states, I am computing the proportion of schools that offer AP courses, the proportion of students who attend schools that offer AP courses, and the total enrollment, according to whether the schools are "majority-minority".
+
+```{r q2}
+saber_maj_min <- saber |>
+  filter(state %in% largestStates, total >= 200) |>
+
+  mutate(non_white_students = total - White,
+         majority_minority = ifelse(non_white_students / total > 0.5, "Yes", "No")) |>
+  
+  group_by(state, majority_minority) |>
+  
+  summarize(
+    offeringAP = mean(ap == "Yes"),  
+    studentsAP = sum((ap == "Yes") * total) / sum(total),  
+    totalEnrollment = sum(total)  
+  ) |>
+  
+  slice_head(n = 10)
+
+saber_maj_min
+```
+
+
+## Question 3
+
+```{r q3}
+saber_maj_min_sorted <- saber_maj_min |>
+  group_by(state) |>
+  mutate(avg_offeringAP = mean(offeringAP)) |>   # Calculate the averages of 'offeringAP' for each state in a new column
+  arrange(desc(avg_offeringAP), majority_minority) |>  # Sort by averages and by majority_minority within each state
+  ungroup() |>
+  select(-avg_offeringAP)  # Remove the 'avg_offeringAP' column from the final output
+
+saber_maj_min_sorted |>
+  gt() |>
+  fmt_percent(columns = 3:4) |>
+  fmt_integer(columns = 5, suffixing = "K") |>
+  as_raw_html()
+
+```
+
+
+For all states besides Texas and Illinois, the proportion of majority-minority schools that offer AP courses is less than those not in that category. Additionally, the proportion of students enrolled in AP courses is directly proportional to the percentage of schools offering AP. That is, if there are more schools offering AP, than more students will be enrolled in these programs. Across all states, the percentage of students enrolled in AP classes do not drop below 80%, even for locations such as New York, where the proportion of majority-minority schools that offer AP classes are the lowest at around 68%.
+
+
+## Question 4
+
+```{r}
+# For Black students
+saber_bsummary <- saber |>
+  filter(total >= 300) |>
+  mutate(blackProp = (Black / total)) |>  # Calculate proportion of Black students
+  mutate(bin = cut_interval(blackProp, 10)) |> # Create bins
+  
+  group_by(bin) |>
+  summarize(
+    offeringAP = mean(ap == "Yes"),  # Proportion of schools offering AP
+    totalSchools = n(),              # Total number of schools in the bin
+    totalEnrollment = sum(total)     # Total enrollment in the bin
+  ) |>
+  
+  ungroup()
+
+saber_bsummary
+```
+
+```{r}
+# For Asian students
+saber_asummary <- saber |>
+  filter(total >= 300) |>
+  mutate(asianProp = (Asian / total)) |>  # Calculate proportion of Asian students
+  mutate(bin = cut_interval(asianProp, 10)) |> # Create bins 
+  
+  group_by(bin) |>
+  summarize(
+    offeringAP = mean(ap == "Yes"),  # Proportion of schools offering AP
+    totalSchools = n(),              # Total number of schools in the bin
+    totalEnrollment = sum(total)     # Total enrollment in the bin
+  ) |>
+  
+  ungroup()
+
+saber_asummary
+```
+
+The proportion of schools offering AP is higher for Asian students than it is or Black students. The same can be said for both the total number of schools and the total number of students enrolled. Compared to the table for Black students, totalSchools and totalEnrollment also seem to decrease exponentially fast as we move down for Asian students.
+
+```{r}
+# Step 1: Convert 'ap' column to a binary factor if it's not already
+saber <- saber %>%
+  mutate(ap_binary = ifelse(ap == "Yes", 1, 0))
+
+# Step 2: Group by the new binary AP variable and calculate the mean total enrollment for each group
+ap_summary <- saber %>%
+  group_by(ap_binary) %>%
+  summarise(mean_total = mean(total, na.rm = TRUE),
+            count_schools = n())
+
+# Step 3: Print the summary to see average enrollments for schools that offer/don't offer AP
+print(ap_summary)
+
+# Step 4: Visualize the relationship between total enrollment and AP offering using box plots
+ggplot(saber, aes(x = factor(ap_binary, labels = c("No AP", "AP")), y = total)) +
+  geom_boxplot(fill = c("orange", "green")) +
+  labs(title = "Comparison of School Enrollment by AP Offering",
+       x = "AP Courses Offered",
+       y = "Total Enrollment") +
+  theme_minimal()
+```
+
