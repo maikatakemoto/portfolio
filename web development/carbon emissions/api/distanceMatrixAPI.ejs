@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="testingMapApp.css">
+    <title>Distance Finder</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Find the Distance Between Two Places</h1>
+        <form class="form-horizontal" onsubmit="calcRoute(); return false;">
+            <div class="form-group">
+                <label for="from">From Location:</label>
+                <input type="text" class="form-control" id="from" placeholder="Origin Location">
+            </div>
+            <div class="form-group">
+                <label for="to">To Location:</label>
+                <input type="text" class="form-control" id="to" placeholder="Destination Location">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-info btn-lg">Calculate</button>
+            </div>
+        </form>
+        <div class="container-fluid">
+            <div id="output"></div>
+            <div id="map" style="width:100%; height:400px;"></div>
+        </div>
+    </div>
+    
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXEo5Vqdh7jhgZHM8M_EFhVqNB0cdFaZ8&callback=initMap&libraries=places" async defer></script>
+    <script src="maintesting.js"></script>
+</body>
+</html>
+
+
+<!-- 
+/* <script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXEo5Vqdh7jhgZHM8M_EFhVqNB0cdFaZ8&callback=initMap&libraries=places">
+</script>
+
+function calculateDistance() {
+    var origin = 'Boston, MA'; // Example origin
+    var destination = 'New York, NY'; // Example destination
+
+    var service = new google.maps.DistanceMatrixService();
+    service.getDistanceMatrix(
+        {
+            origins: [origin],
+            destinations: [destination],
+            travelMode: 'DRIVING',
+            unitSystem: google.maps.UnitSystem.IMPERIAL, // Can be set to METRIC
+        }, callback);
+
+    function callback(response, status) {
+        if (status == 'OK') {
+            var origins = response.originAddresses;
+            var destinations = response.destinationAddresses;
+
+            for (var i = 0; i < origins.length; i++) {
+                var results = response.rows[i].elements;
+                for (var j = 0; j < results.length; j++) {
+                    var element = results[j];
+                    var distance = element.distance.text;
+                    var duration = element.duration.text;
+                    var from = origins[i];
+                    var to = destinations[j];
+                    console.log(`Distance from ${from} to ${to} is ${distance} taking about ${duration}.`);
+                }
+            }
+        } else {
+            console.log('Error with Distance Matrix service:', status);
+        }
+    }
+}
+
+// Ensure the API is loaded before calling `calculateDistance`
+function initMap() {
+    calculateDistance();
+} */ --></meta>
