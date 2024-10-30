@@ -1,0 +1,95 @@
+body {
+    font-family : Arial, sans-serif;
+    margin: 40px;
+    background-color: #f0f0f0;
+ }
+ 
+ 
+ h1, h2 {
+    color: #333;
+ }
+ 
+ 
+ p {
+    background-color: #fff;
+    padding: 20px;
+    width: 300px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+ }
+ 
+ 
+ button {
+    padding: 10px 20px;
+    background-color: #008CBA;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+ }
+ 
+ 
+ button:hover {
+    background-color: #005f73;
+ } 
+
+ /* Calculator Page  */
+ .calculator-intro, .interactive-map, .transportation-options, .results, .tips {
+   padding: 20px;
+   margin-bottom: 20px;
+   background:#fff;
+   border-radius: 8px;
+   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+ }
+
+ /* Map */
+ #map {
+   width: 100%;
+   height: 300px;
+   background-color: #e0e0e0;
+   margin-top: 10px;
+ }
+
+ /* Transportation Options */
+ .transportation-options select {
+   width: 100;
+   padding: 10px;
+   border: 1px solid #ccc;
+   border-radius: 5px;
+   box-shadow: none;
+ }
+
+ /* Results */
+ .results p {
+   color: #444;
+ }
+
+ /* Tips */
+ .tips ul {
+   list-style-type: none;
+   padding: 0;
+ }
+
+ .tips li {
+   background: none;
+   padding: 5px 0;
+   border-bottom: 1px solid #eee;
+ }
+
+ /* About Us Page */
+ .about-us, .calculator-explanation {
+   padding: 20px;
+   margin-bottom: 20px;
+   background: #fff;
+   border-radius: 8px;
+   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+ }
+
+ .about-us h1, .calculator-explanation h2 {
+   color: #005f73;
+ }
+
+ .about-us p, .calculator-explanation p {
+   width: auto;
+   max-width: 600px;
+ }

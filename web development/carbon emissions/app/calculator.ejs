@@ -1,0 +1,51 @@
+<%- include('partials/header') %>
+
+<!-- Calculator Introduction -->
+<section class="calculator-intro">
+    <h1>Carbon Footprint Calculator</h1>
+    <p>Enter your travel details to estimate your carbon footprint.</p>
+ </section>
+ 
+ 
+ <!-- Interactive Map Section -->
+ <section class="interactive-map">
+    <h2>Map</h2>
+    <p>Use the map below to select your start and end points.</p>
+    <!-- we could put the map here? -->
+    <div id="map"></div>
+ </section>
+ 
+ 
+ <!-- Transportation Options -->
+ <section class="transportation-options">
+    <h2>Choose your transportation mode</h2>
+    <!-- we would need to refer these id and values for our css if ever -->
+    <select id="mode">
+        <option value="car">Car</option>
+        <option value="walking">Walking</option>
+        <option value="public">Public Transit</option>
+    </select>
+ </section>
+ 
+ 
+ <!-- Results Section? -->
+ <section class="results">
+    <h2>Your Estimated Carbon Footprint</h2>
+    <p>Please see your calculated Carbon emission.</p>
+ </section>
+ 
+ 
+ <!-- Tips Section? -->
+ <section class="tips">
+    <h2>Tips for Reducing your Carbon Footprint</h2>
+    <p>Consider the following suggestions to reduce your impact:</p>
+    <ul>
+        <li>Tip 1: Use public transportation more frequently.</li>
+        <li>Tip 2: Consider walking or biking for close journeys.</li>
+        <li>Tip 3: Consider carpooling with your friends or co-workers.</li>
+        <li>Tip 4: Drive a low-carbon vehicle such as Electric vehicles.</li>
+    </ul>
+ </section>
+</div>
+
+<%- include('partials/footer') %>
